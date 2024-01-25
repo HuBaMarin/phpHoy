@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql
+    build: mysql
+    ports:
+      - ${PORT_MYSQL}:3306
+    volumes:
+      - ./datos:/var/lib/mysql #los datos se guardan en el directorio
+      - ./datos.sql:/docker-entrypoint-initdb.d/datos.sql
+    environment:
+      - MYSQL_USER=${USER_}
+      - MYSQL_PASSWORD=${PASSWORD}
+      - MYSQL_DATABASE=${DATABASE}
+      - MYSQL_ROOT_PASSWORD=${PASSWORD_ROOT}
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - ${PORT_PHPMYADMIN}:80
+    depends_on:
+      - mysql
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql
